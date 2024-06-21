@@ -1,4 +1,4 @@
-# singlanguage
+# Sing Language App
 
 A new Flutter project.
 
