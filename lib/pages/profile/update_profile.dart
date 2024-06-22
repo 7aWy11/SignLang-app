@@ -1,31 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:singlanguage/controllers/auth_controller.dart';
 
 
-class CompleteProfileScreen extends StatefulWidget {
-  static String routName = 'complete_profile';
+class UpdateProfileScreen extends StatefulWidget {
+  static String routName = 'update_profile';
 
   @override
-  _CompleteProfileScreenState createState() => _CompleteProfileScreenState();
+  _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
 }
 
-class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
+class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   var _authController = null;
+  String? FirstName;
+  String? LastName;
+  String? email;
+  String? role;
+  String? phone;
+  final storage = FlutterSecureStorage();
+
 
   @override
   void initState() {
     super.initState();
+    _fetchData();
   }
+
+
+
+  Future<void> _fetchData() async {
+    String? fetchedFirstName = await storage.read(key: "first_name");
+    String? fetchedLastName = await storage.read(key: "last_name");
+    String? fetchedPhone = await storage.read(key: "phone");
+
+    setState(() {
+      firstNameController.text = fetchedFirstName.toString();
+      lastNameController.text = fetchedLastName.toString();
+      phoneNumberController.text = fetchedPhone.toString();
+    });
+  }
+
 
   Future<void> _updateProfile() async {
     if (_formKey.currentState!.validate()) {
       _authController.updateProfile(firstNameController.text.trim(),
-          lastNameController.text.trim(), phoneNumberController.text.trim() , true);
+          lastNameController.text.trim(), phoneNumberController.text.trim(), false);
     }
   }
 
@@ -44,7 +68,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                 children: <Widget>[
                   // Complete Profile title
                   Text(
-                    'Complete your profile',
+                    'Update your profile',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -62,7 +86,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                   SizedBox(height: 20),
                   // Instruction Text
                   Text(
-                    'Here after sign up, Please complete your personal data to use our application.',
+                    'Update your personal information, to be reliability with your ID.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
@@ -74,8 +98,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                   TextFormField(
                     controller: firstNameController,
                     decoration: InputDecoration(
-                      labelText: 'First name',
-                      hintText: 'First name',
+                      labelText: 'First Name',
+                      hintText: FirstName.toString(),
                       suffixIcon: IconButton(
                         icon: Icon(Icons.clear),
                         onPressed: () {
@@ -98,8 +122,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                   TextFormField(
                     controller: lastNameController,
                     decoration: InputDecoration(
-                      labelText: 'Last name',
-                      hintText: 'Last name',
+                      labelText: 'Last Name',
+                      hintText: LastName.toString(),
                       suffixIcon: IconButton(
                         icon: Icon(Icons.clear),
                         onPressed: () {
@@ -123,8 +147,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                     controller: phoneNumberController,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                      labelText: 'Phone No.',
-                      hintText: 'Phone No.',
+                      labelText: 'Phone Number',
+                      hintText: phone.toString(),
                       suffixIcon: IconButton(
                         icon: Icon(Icons.clear),
                         onPressed: () {

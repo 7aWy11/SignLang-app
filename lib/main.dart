@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:singlanguage/pages/main/home.dart';
+import 'package:singlanguage/pages/profile/change_password.dart';
+import 'package:singlanguage/pages/profile/settings.dart';
+import 'package:singlanguage/pages/profile/update_profile.dart';
 import 'pages/auth/confirm_password.dart';
 import 'pages/auth/forget_password.dart';
 import 'pages/auth/login.dart';
@@ -43,8 +47,11 @@ class _MyWidgetState extends State<SignLang> {
         ConfirmPasswordScreen.routName: (context) => ConfirmPasswordScreen(),
         CompleteProfileScreen.routName: (context) => CompleteProfileScreen(),
         HomeScreen.routName: (context) => HomeScreen(),
+        ProfileScreen.routName: (context) => ProfileScreen(),
+        UpdateProfileScreen.routName: (context) => UpdateProfileScreen(),
+        ChangePasswordScreen.routName: (context) => ChangePasswordScreen(),
 
-      },
+    },
     );
   }
 }

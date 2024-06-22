@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:singlanguage/controllers/auth_controller.dart';
 import '../../helper/shared.dart';
-import '../../pages/main/complete_profile.dart';
 import '../../pages/auth/login.dart';
 import '../../pages/main/privacy_and_policy.dart';
 

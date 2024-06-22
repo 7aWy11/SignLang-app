@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
 
-class ConfirmPasswordScreen extends StatefulWidget {
-  static String routName = 'confirm_password';
+import '../../controllers/auth_controller.dart';
+import '../../helper/shared.dart';
+
+class ChangePasswordScreen extends StatefulWidget {
+  static String routName = 'change_password';
 
   @override
-  _ConfirmPasswordScreenState createState() => _ConfirmPasswordScreenState();
+  _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
 }
 
-class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-  bool _passwordVisible = false;
-  bool _confirmPasswordVisible = false;
-
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  final TextEditingController currnetpasswordController = TextEditingController();
+  final TextEditingController newpasswordController = TextEditingController();
+  final TextEditingController newconfirmPasswordController = TextEditingController();
+  bool _currentpasswordVisible = false;
+  bool _newPasswordVisible = false;
+  bool _newconfirmPasswordVisible = false;
+  var _authController = null;
   final _formKey = GlobalKey<FormState>();
 
-  void _confirmPassword() {
+  void _updatePassword() {
     if (_formKey.currentState!.validate()) {
       // Proceed with password confirmation
 
+      _authController.changePassword(currnetpasswordController.text,
+          newconfirmPasswordController.text);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    _authController = AuthController(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -37,7 +44,7 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                 children: <Widget>[
                   // Confirm Password title
                   Text(
-                    'Confirm password',
+                    'Change password',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -53,22 +60,22 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                     fit: BoxFit.contain,
                   ),
                   SizedBox(height: 20),
-                  // Password field
+                  // Current Password field
                   TextFormField(
-                    controller: passwordController,
-                    obscureText: !_passwordVisible,
+                    controller: currnetpasswordController,
+                    obscureText: !_currentpasswordVisible,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: 'Current Password',
                       prefixIcon: Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _passwordVisible
+                          _currentpasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
                           setState(() {
-                            _passwordVisible = !_passwordVisible;
+                            _currentpasswordVisible = !_currentpasswordVisible;
                           });
                         },
                       ),
@@ -78,7 +85,38 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return "You must enter your password";
+                        return "You must enter your current password";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  // New Password field
+                  TextFormField(
+                    controller: newpasswordController,
+                    obscureText: !_newPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: 'New Password',
+                      prefixIcon: Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _newPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _newPasswordVisible = !_newPasswordVisible;
+                          });
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "You must enter your new password";
                       }
                       var regex = RegExp(
                           r"(?=^.{8,}$)(?=.*[!@#$%^&*]+)(?!.*\n)(?=.*[A-Z])(?=.*[a-z]).*$");
@@ -89,22 +127,22 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                     },
                   ),
                   SizedBox(height: 20),
-                  // Confirm Password field
+                  // Confirm New Password field
                   TextFormField(
-                    controller: confirmPasswordController,
-                    obscureText: !_confirmPasswordVisible,
+                    controller: newconfirmPasswordController,
+                    obscureText: !_newconfirmPasswordVisible,
                     decoration: InputDecoration(
-                      labelText: 'Confirm Password',
+                      labelText: 'Confirm New Password',
                       prefixIcon: Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _confirmPasswordVisible
+                          _newconfirmPasswordVisible
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
                           setState(() {
-                            _confirmPasswordVisible = !_confirmPasswordVisible;
+                            _newconfirmPasswordVisible = !_newconfirmPasswordVisible;
                           });
                         },
                       ),
@@ -114,9 +152,9 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return "You must confirm your password";
+                        return "You must confirm your new password";
                       }
-                      if (value != passwordController.text) {
+                      if (value != newpasswordController.text) {
                         return "Passwords do not match";
                       }
                       return null;
@@ -125,11 +163,11 @@ class _ConfirmPasswordScreenState extends State<ConfirmPasswordScreen> {
                   SizedBox(height: 20),
                   // Confirm button
                   ElevatedButton(
-                    onPressed: _confirmPassword,
+                    onPressed: _updatePassword,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF8A56AC),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                      EdgeInsets.symmetric(horizontal: 100, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),

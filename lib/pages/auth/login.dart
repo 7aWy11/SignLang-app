@@ -1,8 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:singlanguage/controllers/auth_controller.dart';
-import 'package:singlanguage/pages/main/complete_profile.dart';
 import 'package:singlanguage/pages/auth/forget_password.dart';
 import 'package:singlanguage/pages/auth/register.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

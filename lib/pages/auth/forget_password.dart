@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../pages/auth/otp_password.dart';
-import '../../pages/auth/confirm_password.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get/get.dart';
 
 
 class ForgetPasswordScreen extends StatefulWidget {

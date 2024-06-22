@@ -1,15 +1,12 @@
-import 'dart:ui';
-
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:singlanguage/controllers/auth_controller.dart';
 import 'dart:async';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:singlanguage/pages/profile/settings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../helper/shared.dart';
-import '../auth/login.dart';
 
 class HomeScreen extends StatefulWidget {
   static String routName = 'HomeScreen';
@@ -31,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String? email;
   String? role;
 
-
   @override
   void initState() {
     super.initState();
@@ -49,20 +45,16 @@ class _HomeScreenState extends State<HomeScreen> {
     String? fetchedEmail = await storage.read(key: "email");
     String? fetchedRole = await storage.read(key: "role");
     setState(() {
-
       FirstName = fetchedFirstName;
       LastName = fetchedLastName;
       email = fetchedEmail;
       role = fetchedRole;
-
     });
   }
+
   void _jumpToPage(int index) {
     _pageController.jumpToPage(index);
   }
-
-
-
 
   _launchURL(String URL) async {
     final Uri url = Uri.parse(URL);
@@ -71,57 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Future<void> checkUserRole()async {
-  //   if (role == "banned")
-  //     showCupertinoDialogReuse(context , "user manager: checking role ", "Administrator give you banned now! go out");
-  //     //Navigator.pushReplacementNamed(context, LoginScreen.routName);
-  //   }
-
   String _getCurrentTime() {
     return DateFormat('MMMM dd - HH:mm:ss').format(DateTime.now());
   }
-
-
-
-/*
-* AnimatedNotchBottomBar(
-        notchBottomBarController: _controller,
-        pageController: _pageController,
-        bottomBarItems: [
-          BottomBarItem(
-            inActiveItem: Icon(Icons.home_filled, color: Colors.blueGrey),
-            activeItem: Icon(Icons.home_filled, color: Colors.blueAccent),
-            itemLabel: 'Home',
-          ),
-          BottomBarItem(
-            inActiveItem: Icon(Icons.play_lesson, color: Colors.blueGrey),
-            activeItem: Icon(Icons.play_lesson, color: Colors.blueAccent),
-            itemLabel: 'Lessons',
-          ),
-          BottomBarItem(
-            inActiveItem: Icon(Icons.person, color: Colors.blueGrey),
-            activeItem: Icon(Icons.person, color: Colors.blueAccent),
-            itemLabel: 'Profile',
-          ),
-        ],
-        removeMargins: true,
-        bottomBarWidth: 500.0,
-        bottomBarHeight: 62.0,
-        durationInMilliSeconds: 300,
-        showLabel: true,
-        itemLabelStyle: TextStyle(
-          color: Colors.black,
-          fontSize: 16.0,
-        ),
-        notchColor: Colors.black87,
-        showBottomRadius: false,
-        showTopRadius: false,
-        elevation: 2.0,
-        showBlurBottomBar: true,
-        blurOpacity: 0.2,
-        blurFilterX: 5.0,
-        blurFilterY: 10.0, onTap: (int value) {  }, kIconSize: 1, kBottomRadius: 1,
-      )*/
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: PageView(
           controller: _pageController,
-          physics: NeverScrollableScrollPhysics(), // Disable swiping
+          physics: NeverScrollableScrollPhysics(),
           children: [
             SingleChildScrollView(
               child: Padding(
@@ -199,14 +143,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         CircleAvatar(
                           radius: 30,
-                          backgroundImage: AssetImage('assets/images/avatar.png'),
+                          backgroundImage:
+                              AssetImage('assets/images/avatar.png'),
                         ),
-                        SizedBox(width: MediaQuery.of(context).size.width*0.0266),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.0266),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Hello', style: TextStyle(fontSize: 16)),
-                            Text(FirstName.toString() + " " + LastName.toString(),
+                            Text(
+                                FirstName.toString() +
+                                    " " +
+                                    LastName.toString(),
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold)),
                             Text('Welcome back!',
@@ -215,12 +164,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.0246),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.0246),
 
                     // Camera for Sign Language Card
                     GestureDetector(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       child: Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
@@ -249,12 +198,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     SizedBox(height: 30),
                                     Row(
                                       children: [
-                                        Image.asset('assets/images/calendar.png',
-                                            width: 40, height: 40),
+                                        Image.asset(
+                                            'assets/images/calendar.png',
+                                            width: 40,
+                                            height: 40),
                                         SizedBox(width: 5),
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(_currentTime!,
                                                 style: TextStyle(fontSize: 16)),
@@ -276,7 +227,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Image.asset('assets/images/Frame.png',
                                         width: 100, height: 40),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(Icons.circle,
                                             color: Colors.green, size: 10),
@@ -291,8 +243,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               Positioned(
                                 top: 25,
                                 right: -20,
-                                child: Image.asset('assets/images/camera_home.png',
-                                    width: 180, height: 180),
+                                child: Image.asset(
+                                    'assets/images/camera_home.png',
+                                    width: 180,
+                                    height: 180),
                               ),
                             ],
                           ),
@@ -305,10 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Expanded(
                           child: GestureDetector(
-                            onTap: ()
-                            {
-
-                            },
+                            onTap: () {},
                             child: Card(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
@@ -327,7 +278,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           SizedBox(height: 170),
                                           Text('Lessons',
@@ -360,7 +312,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Image.asset(
                                               'assets/images/lessons_icon.png',
-                                              width: 160, height: 160),
+                                              width: 160,
+                                              height: 160),
                                         ],
                                       ),
                                     ),
@@ -373,8 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(width: 5),
                         Expanded(
                           child: GestureDetector(
-                            onTap: ()
-                            {
+                            onTap: () {
                               _launchURL('http://10.0.2.2:8000');
                             },
                             child: Card(
@@ -395,7 +347,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           SizedBox(height: 170),
                                           Text('Website',
@@ -417,13 +370,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                               width: 170, height: 30),
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                                MainAxisAlignment.center,
                                             children: [
                                               Icon(Icons.circle,
-                                                  color: Colors.green, size: 10),
+                                                  color: Colors.green,
+                                                  size: 10),
                                               SizedBox(width: 5),
                                               Text('Online',
-                                                  style: TextStyle(fontSize: 12)),
+                                                  style:
+                                                      TextStyle(fontSize: 12)),
                                             ],
                                           ),
                                         ],
@@ -437,7 +392,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Image.asset(
                                               'assets/images/website_icon.png',
-                                              width: 160, height: 160),
+                                              width: 160,
+                                              height: 160),
                                         ],
                                       ),
                                     ),
@@ -460,22 +416,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             imagePath: 'assets/images/photo1.png',
                             title: 'Happy',
                             description:
-                            'To sign "happy," rotate 1 or 2 hands in front of your chest. To sign "happy," rotate 1 or 2 hands in front of your chest. To sign "happy," rotate 1 or 2 hands in front of your chest.',
+                                'To sign "happy," rotate 1 or 2 hands in front of your chest. To sign "happy," rotate 1 or 2 hands in front of your chest. To sign "happy," rotate 1 or 2 hands in front of your chest.',
                             heartCount: 10,
-
                           ),
                           CustomCard(
                             imagePath: 'assets/images/photo2.png',
                             title: 'Sad',
                             description:
-                            'To sign "sad," drag both hands down your face like tears.',
+                                'To sign "sad," drag both hands down your face like tears.',
                             heartCount: 20,
                           ),
                           CustomCard(
                             imagePath: 'assets/images/photo3.png',
                             title: 'Angry or mad',
                             description:
-                            'To sign "angry" or "mad," scrunch your hand in front of your face.',
+                                'To sign "angry" or "mad," scrunch your hand in front of your face.',
                             heartCount: 30,
                           ),
                         ],
@@ -486,17 +441,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Center(child: Text('Lesson Page')),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  MessageBoxonConfirm(context, "Log out",
-                      "Are you sure you want to log out?", () {
-                        _authController.logout();
-                      });
-                },
-                child: Text('Logout!'),
-              ),
-            ),
+            ProfileScreen(),
           ],
         ),
       ),
@@ -538,9 +483,7 @@ class _CustomCardState extends State<CustomCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(widget.imagePath,
-                  width: double.infinity,
-                  height: 100,
-                  fit: BoxFit.cover),
+                  width: double.infinity, height: 100, fit: BoxFit.cover),
               SizedBox(height: 8),
               Text(widget.title,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -548,11 +491,11 @@ class _CustomCardState extends State<CustomCard> {
               isExpanded
                   ? Text(widget.description, style: TextStyle(fontSize: 14))
                   : Text(
-                widget.description,
-                style: TextStyle(fontSize: 14),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
+                      widget.description,
+                      style: TextStyle(fontSize: 14),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
               if (widget.description.length > 100)
                 Text(
                   isExpanded ? 'Read less' : 'Read more...',

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:singlanguage/controllers/auth_controller.dart';
 import 'package:singlanguage/pages/auth/login.dart';
 import 'package:singlanguage/pages/main/complete_profile.dart';
 import 'package:singlanguage/pages/main/home.dart';
+import 'package:singlanguage/pages/profile/update_profile.dart';
 import 'dart:async';
 import 'package:singlanguage/pages/splash/screen_2.dart';
 
@@ -29,6 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _checkFirstRun() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isFirstRun = prefs.getBool('isFirstRun') ?? true;
+    final storage = FlutterSecureStorage();
 
     if (isFirstRun) {
       prefs.setBool('isFirstRun', false);
@@ -50,7 +53,14 @@ class _SplashScreenState extends State<SplashScreen> {
           if (!mounted) return;
 
           if (await _authController.isAuthed()) {
-             Navigator.pushReplacementNamed(context, HomeScreen.routName);
+            dynamic data = await _authController.getUserData();
+            if (data['first_name'] == null ||
+                data['last_name'] == null ||
+                data['phone'] == null)
+              Navigator.pushReplacementNamed(
+                  context, CompleteProfileScreen.routName);
+            else
+              Navigator.pushReplacementNamed(context, HomeScreen.routName);
           } else {
             Navigator.pushReplacementNamed(context, LoginScreen.routName);
           }

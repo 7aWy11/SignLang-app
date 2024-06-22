@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:singlanguage/pages/auth/login.dart';
 import 'package:singlanguage/pages/main/complete_profile.dart';
 import 'package:singlanguage/pages/main/home.dart';
+import 'package:http/http.dart' as http;
 
 import '../helper/shared.dart';
 
@@ -24,11 +26,13 @@ class AuthController extends GetConnect {
     await storage.delete(key: "token");
   }
 
-  Future<void> saveData(String FirstName , String LastName , String email , String role) async {
+  Future<void> saveData(String FirstName, String LastName, String email,
+      String role, String phone) async {
     await storage.write(key: "first_name", value: FirstName);
     await storage.write(key: "last_name", value: LastName);
     await storage.write(key: "email", value: email);
     await storage.write(key: "role", value: role);
+    await storage.write(key: "phone", value: phone);
   }
 
   Future<void> deleteData() async {
@@ -36,6 +40,7 @@ class AuthController extends GetConnect {
     await storage.delete(key: "last_name");
     await storage.delete(key: "email");
     await storage.delete(key: "role");
+    await storage.delete(key: "phone");
   }
 
   AuthController(context) {
@@ -129,11 +134,21 @@ class AuthController extends GetConnect {
         await saveToken(token);
 
         final user = response.body['user'];
-        await saveData(user['first_name'],user['last_name'],user['email'],user['role']);
-
-        Navigator.pushReplacementNamed(
-            _context, HomeScreen.routName);
-        //Get.offAllNamed('/home');
+        if (user['first_name'] != null &&
+            user['last_name'] != null &&
+            user['email'] != null &&
+            user['role'] != null &&
+            user['phone'] != null) {
+          await saveData(user['first_name'], user['last_name'], user['email'],
+              user['role'], user['phone']);
+          Navigator.pushReplacementNamed(_context, HomeScreen.routName);
+        } else {
+          MessageBoxonConfirm(_context, "Error",
+              "User data is incomplete, do you want to complete it?", () {
+            Navigator.pushReplacementNamed(
+                _context, CompleteProfileScreen.routName);
+          });
+        }
       } else {
         showCupertinoDialogReuse(_context, "Error", 'Login failed');
         //Get.snackbar('Error', 'Login failed');
@@ -167,8 +182,8 @@ class AuthController extends GetConnect {
     }
   }
 
-  Future<void> updateProfile(
-      String firstName, String lastName, String phone) async {
+  Future<void> updateProfile(String firstName, String lastName, String phone,
+      bool navigateToHome) async {
     try {
       final response = await post('/user/update/profile', {
         'first_name': firstName,
@@ -177,15 +192,54 @@ class AuthController extends GetConnect {
       });
       if (response.statusCode == HttpStatus.ok) {
         final user = response.body['user'];
-        await saveData(user['first_name'],user['last_name'],user['email'],user['role']);
-        showSnackBar(_context, "Success Profile updated", Colors.green);
-        Navigator.pushReplacementNamed(_context, HomeScreen.routName);
+        await saveData(user['first_name'], user['last_name'], user['email'],
+            user['role'], user['phone']);
+        if (navigateToHome == true) {
+          Get.snackbar("Success", "Profile updated Successfully");
+          Navigator.pushReplacementNamed(_context, HomeScreen.routName);
+        } else {
+          Get.snackbar("Success", "Profile updated Successfully");
+          Navigator.pop(_context);
+        }
       } else {
         showCupertinoDialogReuse(_context, "Error", response.body['error']);
       }
     } catch (e) {
       print('Update profile failed: $e');
       showCupertinoDialogReuse(_context, "Error", 'Update profile failed');
+    }
+  }
+
+  Future<void> changePassword(
+      String currentPassword, String newPassword) async {
+    try {
+      final response = await post('/user/update/password', {
+        'current_password': currentPassword,
+        'new_password': newPassword,
+      });
+      if (response.statusCode == HttpStatus.ok) {
+        final message = response.body['message'];
+        Get.snackbar("Success", message);
+        Navigator.pop(_context);
+      } else {
+        showCupertinoDialogReuse(_context, "Error", response.body['error']);
+        print(response.body['error']);
+      }
+    } catch (e, stacktrace) {
+      print('Change password failed: $e');
+      print('Stacktrace: ' + stacktrace.toString());
+      showCupertinoDialogReuse(_context, "Error", 'Change password failed');
+    }
+  }
+
+  Future<dynamic> getUserData() async {
+    try {
+      final response = await post("/user", {});
+      if (response.statusCode == HttpStatus.ok) {
+        return response.body;
+      }
+    } catch (e) {
+      showCupertinoDialogReuse(_context, "Error", 'Something wrong happened!');
     }
   }
 
