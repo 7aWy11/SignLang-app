@@ -73,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             Container(
-              height: 250, // Set a fixed height for the container
+              height: MediaQuery.of(context).size.height * (250 / 812), // Set a fixed height for the container
               padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),

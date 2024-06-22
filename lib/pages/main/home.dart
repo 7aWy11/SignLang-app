@@ -7,6 +7,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:singlanguage/pages/profile/settings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../lessons/lesson.dart';
+
 
 class HomeScreen extends StatefulWidget {
   static String routName = 'HomeScreen';
@@ -259,7 +261,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Expanded(
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => LessonScreen()),
+                              );
+                            },
                             child: Card(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:singlanguage/pages/lessons/lesson.dart';
 import 'package:singlanguage/pages/main/home.dart';
 import 'package:singlanguage/pages/profile/change_password.dart';
 import 'package:singlanguage/pages/profile/settings.dart';
@@ -50,6 +51,7 @@ class _MyWidgetState extends State<SignLang> {
         ProfileScreen.routName: (context) => ProfileScreen(),
         UpdateProfileScreen.routName: (context) => UpdateProfileScreen(),
         ChangePasswordScreen.routName: (context) => ChangePasswordScreen(),
+        LessonScreen.routName: (context) => LessonScreen(),
 
     },
     );

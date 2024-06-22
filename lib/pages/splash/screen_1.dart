@@ -31,7 +31,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _checkFirstRun() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isFirstRun = prefs.getBool('isFirstRun') ?? true;
-    final storage = FlutterSecureStorage();
 
     if (isFirstRun) {
       prefs.setBool('isFirstRun', false);
