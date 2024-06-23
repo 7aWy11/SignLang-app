@@ -197,6 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {
                 // Handle help and feedback tap
+
               },
             ),
             ListTile(

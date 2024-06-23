@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'lesson_view.dart';
 
 class LessonScreen extends StatefulWidget {
   static String routName = 'LessonScreen';
@@ -38,8 +39,7 @@ class _LessonScreenState extends State<LessonScreen> {
                     '30 lessons',
                     'TOP 30 SIGNS',
                     Color(0xFFE5F4FD),
-                    Top30SignsScreen(),
-                    height: 250,
+                    'Top 30 Signs',
                   ),
                   _buildLessonCard(
                     context,
@@ -47,7 +47,7 @@ class _LessonScreenState extends State<LessonScreen> {
                     '7 lessons',
                     'Feelings',
                     Color(0xFFFDE7EB),
-                    FeelingsScreen(),
+                    'Feelings',
                   ),
                   _buildLessonCard(
                     context,
@@ -55,7 +55,7 @@ class _LessonScreenState extends State<LessonScreen> {
                     '4 lessons',
                     'Actions',
                     Color(0xFFFDF8C9),
-                    ActionsScreen(),
+                    'Actions',
                   ),
                   _buildLessonCard(
                     context,
@@ -63,9 +63,9 @@ class _LessonScreenState extends State<LessonScreen> {
                     '8 lessons',
                     'Weather',
                     Color(0xFFE7ECF1),
-                    WeatherScreen(),
+                    'Weather',
                   ),
-                 ],
+                ],
               ),
             ),
           ],
@@ -80,16 +80,13 @@ class _LessonScreenState extends State<LessonScreen> {
       String lessonCount,
       String title,
       Color color,
-      Widget screen, {
-        double? height ,
-      }) {
+      String lessonName) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => screen));
+            context, MaterialPageRoute(builder: (context) => LessonView(lessonName: lessonName)));
       },
       child: Container(
-        height: 500,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -106,7 +103,7 @@ class _LessonScreenState extends State<LessonScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 120 , // Adjust height proportionally
+              height: 120,
               decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.only(
@@ -115,7 +112,7 @@ class _LessonScreenState extends State<LessonScreen> {
                 ),
               ),
               child: Center(
-                child: Image.asset(imagePath, height: 80), // Adjust image size proportionally
+                child: Image.asset(imagePath, height: 80),
               ),
             ),
             Padding(
@@ -138,46 +135,6 @@ class _LessonScreenState extends State<LessonScreen> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class Top30SignsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Top 30 Signs')),
-      body: Center(child: Text('Top 30 Signs Content')),
-    );
-  }
-}
-
-class FeelingsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Feelings')),
-      body: Center(child: Text('Feelings Content')),
-    );
-  }
-}
-
-class ActionsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Actions')),
-      body: Center(child: Text('Actions Content')),
-    );
-  }
-}
-
-class WeatherScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Weather')),
-      body: Center(child: Text('Weather Content')),
     );
   }
 }

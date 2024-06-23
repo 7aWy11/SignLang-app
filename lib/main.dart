@@ -10,6 +10,7 @@ import 'pages/auth/forget_password.dart';
 import 'pages/auth/login.dart';
 import 'pages/auth/otp_password.dart';
 import 'pages/auth/register.dart';
+import 'pages/lessons/lesson_view.dart';
 import 'pages/main/complete_profile.dart';
 import 'pages/main/privacy_and_policy.dart';
 import 'pages/splash/screen_1.dart';

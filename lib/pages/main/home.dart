@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:singlanguage/pages/profile/settings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../helper/shared.dart';
 import '../lessons/lesson.dart';
 
 
@@ -29,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String? LastName;
   String? email;
   String? role;
+  String? websiteStatus;
+  String? aiModelStatus;
 
   @override
   void initState() {
@@ -54,6 +57,17 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
+  Future<void> _fetchStatuses() async {
+    String? fewebsiteStatus_ = await storage.read(key: "websiteStatus");
+    String? ModelStatus_ = await storage.read(key: "aiModelStatus");
+    setState(() {
+      websiteStatus = fewebsiteStatus_;
+      aiModelStatus = ModelStatus_;
+    });
+  }
+
+
   void _jumpToPage(int index) {
     _pageController.jumpToPage(index);
   }
@@ -73,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     _authController = AuthController(context);
     _fetchData();
+    _fetchStatuses();
     return SafeArea(
       child: Scaffold(
         extendBody: true,
@@ -105,12 +120,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemLabel: 'Home',
               ),
               BottomBarItem(
-                inActiveItem: Icon(Icons.star, color: Colors.blueGrey),
+                inActiveItem: Icon(Icons.menu_book_outlined, color: Colors.blueGrey),
                 activeItem: Icon(
-                  Icons.star,
+                  Icons.menu_book_outlined,
                   color: Colors.purple,
                 ),
-                itemLabel: 'Blogs',
+                itemLabel: 'Lesson',
               ),
               BottomBarItem(
                 inActiveItem: Icon(
@@ -171,7 +186,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     // Camera for Sign Language Card
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                      },
                       child: Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
@@ -209,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(_currentTime!,
+                                            Text(_currentTime,
                                                 style: TextStyle(fontSize: 16)),
                                             Text('Update Every Monday / Friday',
                                                 style: TextStyle(fontSize: 16)),
@@ -235,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Icon(Icons.circle,
                                             color: Colors.green, size: 10),
                                         SizedBox(width: 5),
-                                        Text('Online',
+                                        Text(aiModelStatus.toString(),
                                             style: TextStyle(fontSize: 12)),
                                       ],
                                     ),
@@ -334,7 +350,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              _launchURL('http://10.0.2.2:8000');
+                              if(websiteStatus.toString() == 'online')
+                                {
+                                  _launchURL('http://10.0.2.2:8000');
+                                }
+                              else if(websiteStatus.toString() == 'offline')
+                                {
+                                  showCupertinoDialogReuse(context, "Website", 'Sorry our website is now offline try again later.');
+                                }
                             },
                             child: Card(
                               shape: RoundedRectangleBorder(
@@ -383,7 +406,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   color: Colors.green,
                                                   size: 10),
                                               SizedBox(width: 5),
-                                              Text('Online',
+                                              Text(websiteStatus.toString(),
                                                   style:
                                                       TextStyle(fontSize: 12)),
                                             ],
@@ -447,7 +470,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            Center(child: Text('Lesson Page')),
+            LessonScreen(),
             ProfileScreen(),
           ],
         ),

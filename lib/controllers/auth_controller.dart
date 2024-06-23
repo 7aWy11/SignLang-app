@@ -48,15 +48,16 @@ class AuthController extends GetConnect {
     httpClient.baseUrl = 'http://10.0.2.2:8000/api/v1/auth';
     httpClient.addRequestModifier<void>((request) async {
       final token = await getToken();
-      if (token != null) {
-        request.headers['Authorization'] = 'Bearer $token';
-      }
+      if (token != null) request.headers['Authorization'] = 'Bearer $token';
+      request.headers['Accept'] = 'application/json';
       return request;
     });
 
     httpClient.addResponseModifier<void>((request, response) async {
       if (response.statusCode == HttpStatus.unauthorized) {
+        print("HttpStatus.unauthorized");
         final newToken = await refreshToken();
+        print("newToken: $newToken\n");
         if (newToken != null) {
           await saveToken(newToken);
           request.headers['Authorization'] = 'Bearer $newToken';
@@ -68,42 +69,14 @@ class AuthController extends GetConnect {
       }
       return response;
     });
-  }
-
-  @override
-  void onInit() {
-    httpClient.baseUrl = 'http://10.0.2.2:8000/api/v1/auth';
-    httpClient.addRequestModifier<void>((request) async {
-      final token = await getToken();
-      if (token != null) {
-        request.headers['Authorization'] = 'Bearer $token';
-      }
-      return request;
-    });
-
-    httpClient.addResponseModifier<void>((request, response) async {
-      if (response.statusCode == HttpStatus.unauthorized) {
-        final newToken = await refreshToken();
-        if (newToken != null) {
-          await saveToken(newToken);
-          request.headers['Authorization'] = 'Bearer $newToken';
-          return await httpClient.request(
-              request.method, request.url as String);
-        } else {
-          Get.offAllNamed('/login');
-        }
-      }
-      return response;
-    });
-
-    super.onInit();
   }
 
   Future<String?> refreshToken() async {
     try {
-      final response = await post("/refresh", null);
+      final response = await post("/refresh", []);
       if (response.statusCode == HttpStatus.ok) {
         final newToken = response.body['token'];
+        print("refreshToken: $newToken\n");
         return newToken;
       } else {
         await deleteToken();
@@ -206,6 +179,8 @@ class AuthController extends GetConnect {
       }
     } catch (e) {
       print('Update profile failed: $e');
+      final token = await storage.read(key: "token");
+      print(token);
       showCupertinoDialogReuse(_context, "Error", 'Update profile failed');
     }
   }
@@ -236,10 +211,33 @@ class AuthController extends GetConnect {
     try {
       final response = await post("/user", {});
       if (response.statusCode == HttpStatus.ok) {
+        print(response.body);
         return response.body;
       }
     } catch (e) {
       showCupertinoDialogReuse(_context, "Error", 'Something wrong happened!');
+    }
+  }
+
+  Future<void> saveStatusesData(String websiteStatus, String aiModelStatus) async {
+    await storage.write(key: "websiteStatus", value: websiteStatus);
+    await storage.write(key: "aiModelStatus", value: aiModelStatus);
+  }
+
+  Future<void> getStatuses() async {
+    try {
+      final response = await get('/statuses');
+
+      if (response.statusCode == HttpStatus.ok) {
+        final List<dynamic> data = response.body;
+        // final websiteStatus = data[0]['status'];
+        // final aiModelStatus = data[1]['status'];
+        await saveStatusesData(data[0]['status'], data[1]['status']);
+      } else {
+        showCupertinoDialogReuse(_context, "Error", 'Failed to load statuses!');
+      }
+    } catch (e) {
+      showCupertinoDialogReuse(_context, "Error", 'Something went wrong!');
     }
   }
 

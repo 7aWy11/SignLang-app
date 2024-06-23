@@ -52,15 +52,22 @@ class _SplashScreenState extends State<SplashScreen> {
           if (!mounted) return;
 
           if (await _authController.isAuthed()) {
-            dynamic data = await _authController.getUserData();
-            if (data['first_name'] == null ||
-                data['last_name'] == null ||
-                data['phone'] == null)
-              Navigator.pushReplacementNamed(
-                  context, CompleteProfileScreen.routName);
-            else
-              Navigator.pushReplacementNamed(context, HomeScreen.routName);
+
+            try{
+              await _authController.getStatuses();
+              dynamic data = await _authController.getUserData();
+              if (data['first_name'] == null || data['last_name'] == null || data['phone'] == null)
+                Navigator.pushReplacementNamed(context, CompleteProfileScreen.routName);
+              else
+                Navigator.pushReplacementNamed(context, HomeScreen.routName);
+            }
+            catch (e)
+            {
+              Navigator.pushReplacementNamed(context, CompleteProfileScreen.routName);
+              print(e);
+            }
           } else {
+            dynamic data = await _authController.getUserData();
             Navigator.pushReplacementNamed(context, LoginScreen.routName);
           }
         },
