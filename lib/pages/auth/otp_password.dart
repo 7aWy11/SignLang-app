@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'confirm_password.dart';
+
 class ConfirmEmailScreen extends StatefulWidget {
   static String routName = 'opt_password';
 
@@ -41,12 +43,10 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
   }
 
   void _submitCode() async {
-    await storage.delete(key: "emailForget");
-    // Handle code submission
-    // Navigator.pushNamed(
-    //   context,
-    //   ConfirmPasswordScreen.routName,
-    // );
+    Navigator.pushNamed(
+      context,
+      ConfirmPasswordScreen.routName,
+    );
   }
 
   @override
@@ -62,7 +62,7 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
                 children: <Widget>[
                   // Confirm Email title
                   Text(
-                    'Confirm Your Email',
+                    'Confirm Code',
                     style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width * (35 / 360),
                       fontWeight: FontWeight.bold,

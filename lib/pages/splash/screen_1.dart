@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
         const Duration(seconds: 4),
         () async {
           if (!mounted) return;
-          // Navigator.pushReplacementNamed(context, HomeScreen.routName); // testing phone + emulator in same time
+           ///Navigator.pushReplacementNamed(context, HomeScreen.routName); // testing phone + emulator in same time
           if (await _authController.isAuthed()) {
             try {
               await _authController.getStatuses();
