@@ -29,6 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _notificationsStatusFuture = _getNotificationsStatus();
+    _fetchData();
   }
 
   Future<bool> _getNotificationsStatus() async {
@@ -49,19 +50,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String? fetchedRole = await storage.read(key: "role");
     String? fetchedPhone = await storage.read(key: "phone");
 
-    setState(() {
-      FirstName = fetchedFirstName;
-      LastName = fetchedLastName;
-      email = fetchedEmail;
-      role = fetchedRole;
-      phone = fetchedPhone;
-    });
+    if (mounted) {
+      setState(() {
+        FirstName = fetchedFirstName;
+        LastName = fetchedLastName;
+        email = fetchedEmail;
+        role = fetchedRole;
+        phone = fetchedPhone;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     var _authController = AuthController(context);
-    _fetchData();
     return Scaffold(
       appBar: AppBar(
         title: Text('PROFILE'),

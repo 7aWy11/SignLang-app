@@ -90,17 +90,16 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         extendBody: true,
         bottomNavigationBar: Container(
-          // height: MediaQuery.of(context).size.height * (110 / 800),
           child: AnimatedNotchBottomBar(
             notchBottomBarController: _controller,
             color: Colors.white,
             showLabel: true,
-            textOverflow: TextOverflow.clip,
+            textOverflow: TextOverflow.visible,
             maxLine: 1,
             shadowElevation: 10,
             kBottomRadius: 15.0,
             removeMargins: false,
-            bottomBarWidth: MediaQuery.of(context).size.width * (200 / 360),
+            bottomBarWidth: MediaQuery.of(context).size.width * (5 / 360),
             showShadow: true,
             durationInMilliSeconds: 200,
             itemLabelStyle: TextStyle(fontSize: MediaQuery.of(context).size.height * (10 / 800)),
@@ -140,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: (index) {
               _jumpToPage(index);
             },
-            kIconSize: MediaQuery.of(context).size.height * (24 / 800),
+            kIconSize: MediaQuery.of(context).size.height * (18 / 800),
           )
 
         ),
