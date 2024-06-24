@@ -115,18 +115,19 @@ class _SignupScreenState extends State<SignupScreen>
                       'SIGNUP',
                       style: TextStyle(
                         fontSize: 30,
+                        color: Color(0xFF8A56AC),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Illustration
                     Image.asset(
                       'assets/images/signup_illustration.png',
-                      height: 300,
-                      width: 300,
+                      height: MediaQuery.of(context).size.height * (250 / 812),
+                      width: MediaQuery.of(context).size.width * (300 / 375),
                       fit: BoxFit.contain,
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Email Address field
                     TextFormField(
                       controller: emailController,
@@ -156,7 +157,7 @@ class _SignupScreenState extends State<SignupScreen>
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Password field
                     TextFormField(
                       controller: passwordController,
@@ -192,7 +193,7 @@ class _SignupScreenState extends State<SignupScreen>
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Confirm Password field
                     TextFormField(
                       controller: confirmPasswordController,
@@ -227,7 +228,7 @@ class _SignupScreenState extends State<SignupScreen>
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Terms of Service checkbox
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -272,7 +273,7 @@ class _SignupScreenState extends State<SignupScreen>
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Signup button
                     ElevatedButton(
                       onPressed: _signup,
@@ -292,7 +293,7 @@ class _SignupScreenState extends State<SignupScreen>
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Sign in link
                     Text.rich(
                       TextSpan(

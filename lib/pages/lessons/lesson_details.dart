@@ -22,31 +22,37 @@ class LessonDetails extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width * (16 / 360)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
                 //leading: Icon(Icons.arrow_back_ios),
-                title: Text('$lessonName - $title' ),
-                trailing: Icon(Icons.arrow_forward_ios),
+                title: Text(
+                  '$lessonName - $title',
+                  style: TextStyle(fontSize: MediaQuery.of(context).size.width * (18 / 360)),
+                ),
+                trailing: Icon(Icons.arrow_forward_ios, size: MediaQuery.of(context).size.width * (24 / 360)),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
-              SizedBox(height: 16),
-              Image.asset(imagePath, height: 200, fit: BoxFit.cover),
-              SizedBox(height: 16),
+              SizedBox(height: MediaQuery.of(context).size.height * (16 / 800)),
+              Image.asset(imagePath, height: MediaQuery.of(context).size.height * (200 / 800), fit: BoxFit.cover),
+              SizedBox(height: MediaQuery.of(context).size.height * (16 / 800)),
               Text(
                 title,
-                style: TextStyle(fontSize: 30 , fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * (30 / 360),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: MediaQuery.of(context).size.height * (16 / 800)),
               Text(
                 description,
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: MediaQuery.of(context).size.width * (13 / 360)),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: MediaQuery.of(context).size.height * (20 / 800)),
               ElevatedButton(
                 onPressed: () {
                   // Handle video playback
@@ -60,10 +66,19 @@ class LessonDetails extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Watch video'),
-                    SizedBox(width: 8),
-                    Icon(Icons.play_arrow),
+                    Text(
+                      'Watch video',
+                      style: TextStyle(fontSize: MediaQuery.of(context).size.width * (16 / 360)),
+                    ),
+                    SizedBox(width: MediaQuery.of(context).size.width * (8 / 360)),
+                    Icon(Icons.play_arrow, size: MediaQuery.of(context).size.width * (24 / 360)),
                   ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * (32 / 360),
+                    vertical: MediaQuery.of(context).size.height * (12 / 800),
+                  ),
                 ),
               ),
             ],

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -6,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:singlanguage/pages/auth/login.dart';
 import 'package:singlanguage/pages/main/complete_profile.dart';
 import 'package:singlanguage/pages/main/home.dart';
-import 'package:http/http.dart' as http;
 
 import '../helper/shared.dart';
+import '../pages/splash/screen_1.dart';
 
 class AuthController extends GetConnect {
   final storage = FlutterSecureStorage();
@@ -56,11 +55,16 @@ class AuthController extends GetConnect {
     httpClient.addResponseModifier<void>((request, response) async {
       if (response.statusCode == HttpStatus.unauthorized) {
         print("HttpStatus.unauthorized");
+        final Token = await getToken();
+        print("Token: $Token\n");
         final newToken = await refreshToken();
         print("newToken: $newToken\n");
         if (newToken != null) {
           await saveToken(newToken);
           request.headers['Authorization'] = 'Bearer $newToken';
+          request.headers['Accept'] = 'application/json';
+          Navigator.pushReplacementNamed(_context, SplashScreen.routName);
+
           return await httpClient.request(
               request.method, request.url as String);
         } else {
@@ -227,11 +231,8 @@ class AuthController extends GetConnect {
   Future<void> getStatuses() async {
     try {
       final response = await get('/statuses');
-
       if (response.statusCode == HttpStatus.ok) {
         final List<dynamic> data = response.body;
-        // final websiteStatus = data[0]['status'];
-        // final aiModelStatus = data[1]['status'];
         await saveStatusesData(data[0]['status'], data[1]['status']);
       } else {
         showCupertinoDialogReuse(_context, "Error", 'Failed to load statuses!');

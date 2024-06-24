@@ -36,7 +36,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
-  camera: ^0.11.0
+  camera: ^0.9.4+3
   tflite_v2: ^1.0.0
   url_launcher: ^6.2.6
   firebase_auth: ^4.19.5
@@ -54,6 +54,12 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   provider: ^6.0.0
 
+dependency_overrides:
+  camera:
+    git:
+      url: https://github.com/bottlepay/plugins.git
+      path: packages/camera/camera
+      ref: e1a4dba770da9bc3cf9f858bac6837083f8b9059
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +118,9 @@ flutter:
     - assets/images/amb.png
     - assets/images/heart.png
     - assets/images/camera.png
+    - assets/images/change_password_illustration.png
+    - assets/detect.tflite
+    - assets/labels.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

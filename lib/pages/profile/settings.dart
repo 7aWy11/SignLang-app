@@ -192,7 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.help),
+              leading: Icon(Icons.headphones),
               title: Text('Help and Feedback'),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () {

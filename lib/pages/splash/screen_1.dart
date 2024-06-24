@@ -3,12 +3,13 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:singlanguage/controllers/auth_controller.dart';
-import 'package:singlanguage/pages/auth/login.dart';
 import 'package:singlanguage/pages/main/complete_profile.dart';
 import 'package:singlanguage/pages/main/home.dart';
 import 'package:singlanguage/pages/profile/update_profile.dart';
 import 'dart:async';
 import 'package:singlanguage/pages/splash/screen_2.dart';
+
+import '../auth/login.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -50,24 +51,30 @@ class _SplashScreenState extends State<SplashScreen> {
         const Duration(seconds: 4),
         () async {
           if (!mounted) return;
-
+          // Navigator.pushReplacementNamed(context, HomeScreen.routName); // testing phone + emulator in same time
           if (await _authController.isAuthed()) {
-
-            try{
+            try {
               await _authController.getStatuses();
               dynamic data = await _authController.getUserData();
-              if (data['first_name'] == null || data['last_name'] == null || data['phone'] == null)
-                Navigator.pushReplacementNamed(context, CompleteProfileScreen.routName);
-              else
-                Navigator.pushReplacementNamed(context, HomeScreen.routName);
-            }
-            catch (e)
-            {
-              Navigator.pushReplacementNamed(context, CompleteProfileScreen.routName);
+              if (data != null) {
+                if (data['first_name'] == null ||
+                    data['last_name'] == null ||
+                    data['phone'] == null)
+                  //print("can't go anything because all arg is null");
+
+                  Navigator.pushReplacementNamed(
+                      context, CompleteProfileScreen.routName);
+                else
+                  Navigator.pushReplacementNamed(context, HomeScreen.routName);
+              }
+            } catch (e) {
+              await _authController.getStatuses();
+              Navigator.pushReplacementNamed(
+                  context, CompleteProfileScreen.routName);
               print(e);
             }
           } else {
-            dynamic data = await _authController.getUserData();
+            await _authController.getStatuses();
             Navigator.pushReplacementNamed(context, LoginScreen.routName);
           }
         },

@@ -66,7 +66,6 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
 
-
   void _login() async {
     if (_formKey.currentState!.validate()) {
       _authController.login(
@@ -105,24 +104,25 @@ class _LoginScreenState extends State<LoginScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Login title
                     Text(
                       'Login',
                       style: TextStyle(
                         fontSize: 30,
+                        color: Color(0xFF8A56AC),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Illustration
                     Image.asset(
                       'assets/images/login_illustration.png',
-                      height: 300,
-                      width: 300,
+                      height: MediaQuery.of(context).size.height * (300 / 812),
+                      width: MediaQuery.of(context).size.width * (400 / 375),
                       fit: BoxFit.contain,
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Email Address field
                     TextFormField(
                       controller: emailController,
@@ -152,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen>
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Password field
                     TextFormField(
                       controller: passwordController,
@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen>
                         return null;
                       },
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: MediaQuery.of(context).size.height * (10 / 812)),
                     // Forgot Password link
                     Align(
                       alignment: Alignment.centerRight,
@@ -196,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Login button
                     ElevatedButton(
                       onPressed: _login,
@@ -216,37 +216,37 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    // Social login buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: Image.asset('assets/images/GOOGLE.png'),
-                          iconSize: 50,
-                          onPressed: () {
-                            // Handle Google login
-                          },
-                        ),
-                        SizedBox(width: 10),
-                        IconButton(
-                          icon: Image.asset('assets/images/APPLE.png'),
-                          iconSize: 50,
-                          onPressed: () {
-                            // Handle Apple login
-                          },
-                        ),
-                        SizedBox(width: 10),
-                        IconButton(
-                          icon: Image.asset('assets/images/FACEBOOK.png'),
-                          iconSize: 50,
-                          onPressed: () {
-                            // Handle Facebook login
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
+                    // SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
+                    // // Social login buttons
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     IconButton(
+                    //       icon: Image.asset('assets/images/GOOGLE.png'),
+                    //       iconSize: 20,
+                    //       onPressed: () {
+                    //         // Handle Google login
+                    //       },
+                    //     ),
+                    //     SizedBox(width: MediaQuery.of(context).size.width * (10 / 812)),
+                    //     IconButton(
+                    //       icon: Image.asset('assets/images/APPLE.png'),
+                    //       iconSize: 20,
+                    //       onPressed: () {
+                    //         // Handle Apple login
+                    //       },
+                    //     ),
+                    //     SizedBox(width: MediaQuery.of(context).size.width * (1 / 812)),
+                    //     IconButton(
+                    //       icon: Image.asset('assets/images/FACEBOOK.png'),
+                    //       iconSize: 20,
+                    //       onPressed: () {
+                    //         // Handle Facebook login
+                    //       },
+                    //     ),
+                    //   ],
+                    // ),
+                    SizedBox(height: MediaQuery.of(context).size.height * (20 / 812)),
                     // Sign up link
                     Text.rich(
                       TextSpan(

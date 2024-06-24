@@ -15,7 +15,7 @@ class LessonView extends StatefulWidget {
 class _LessonViewScreenState extends State<LessonView> {
   final List<Map<String, String>> lessons = List.generate(30, (index) => {
     'title': 'Lesson ${index + 1}',
-    'description': 'Description of Lesson ${index + 1}. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson.',
+    'description': 'Description of Lesson ${index + 1}. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson.',
     'image': 'assets/images/photo2.png',
     'videoUrl': 'https://www.youtube.com/watch?v=5jVnLbdqR6U',
   });
@@ -27,16 +27,18 @@ class _LessonViewScreenState extends State<LessonView> {
         child: Column(
           children: [
             ListTile(
-              leading: Icon(Icons.arrow_back_ios),
-              title: Text(widget.lessonName),
-              //trailing: Icon(Icons.arrow_forward_ios),
+              leading: Icon(Icons.arrow_back_ios, size: MediaQuery.of(context).size.width * (24 / 360)),
+              title: Text(
+                widget.lessonName,
+                style: TextStyle(fontSize: MediaQuery.of(context).size.width * (18 / 360)),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             Expanded(
               child: ListView.builder(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(MediaQuery.of(context).size.width * (16 / 360)),
                 itemCount: lessons.length,
                 itemBuilder: (context, index) {
                   return _buildLessonCard(
@@ -72,11 +74,11 @@ class _LessonViewScreenState extends State<LessonView> {
         );
       },
       child: Container(
-        margin: EdgeInsets.only(bottom: 16.0),
-        padding: EdgeInsets.all(16.0),
+        margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * (16 / 800)),
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * (16 / 360)),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * (12 / 360)),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.3),
@@ -88,8 +90,8 @@ class _LessonViewScreenState extends State<LessonView> {
         ),
         child: Row(
           children: [
-            Image.asset(imagePath, height: 80, width: 80, fit: BoxFit.cover),
-            SizedBox(width: 16),
+            Image.asset(imagePath, height: MediaQuery.of(context).size.height * (80 / 800), width: MediaQuery.of(context).size.width * (80 / 360), fit: BoxFit.cover),
+            SizedBox(width: MediaQuery.of(context).size.width * (16 / 360)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,19 +102,19 @@ class _LessonViewScreenState extends State<LessonView> {
                       Text(
                         title,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: MediaQuery.of(context).size.width * (18 / 360),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Icon(Icons.arrow_forward_ios),
+                      Icon(Icons.arrow_forward_ios, size: MediaQuery.of(context).size.width * (18 / 360)),
                     ],
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: MediaQuery.of(context).size.height * (8 / 800)),
                   Text(
                     description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                    style: TextStyle(fontSize: MediaQuery.of(context).size.width * (14 / 360), color: Colors.grey),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -131,7 +133,7 @@ class _LessonViewScreenState extends State<LessonView> {
                     },
                     child: Text(
                       'Read more',
-                      style: TextStyle(fontSize: 14, color: Colors.blue),
+                      style: TextStyle(fontSize: MediaQuery.of(context).size.width * (14 / 360), color: Colors.blue),
                     ),
                   ),
                 ],
