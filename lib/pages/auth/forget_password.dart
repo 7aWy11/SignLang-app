@@ -3,7 +3,7 @@ import '../../pages/auth/otp_password.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
-  static String routName = 'ForgotPass';
+  static String routeName = 'ForgotPass';
 
   @override
   _ForgetPasswordScreenState createState() => _ForgetPasswordScreenState();
@@ -22,7 +22,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
       Navigator.pushNamed(
         context,
-        ConfirmEmailScreen.routName,
+        ConfirmEmailScreen.routeName,
       );
     }
   }

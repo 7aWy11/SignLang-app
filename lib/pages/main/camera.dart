@@ -4,7 +4,7 @@ import 'package:tflite_v2/tflite_v2.dart';
 import 'dart:async';
 
 class CameraScreen extends StatefulWidget {
-  static String routName = 'CameraScreen';
+  static String routeName = 'CameraScreen';
 
   @override
   _CameraScreenState createState() => _CameraScreenState();

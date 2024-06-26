@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import '../../helper/shared.dart';
 
 class DashboardScreen extends StatefulWidget {
-  static String routName = 'DashboardScreen';
+  static String routeName = 'DashboardScreen';
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -21,13 +21,15 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   late String _currentTime;
   final storage = FlutterSecureStorage();
-  String? FirstName;
-  String? LastName;
+  String? firstName;
+  String? lastName;
   String? email;
   String? role;
   String? websiteStatus;
   String? aiModelStatus;
   Timer? _timer;
+  List<dynamic> _blogs = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -42,6 +44,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
     _fetchUserData();
     _fetchStatuses();
+    _fetchBlogs();
+  }
+
+  Future<void> _fetchBlogs() async {
+    final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/v1/auth/blogs'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      if (mounted) {
+        setState(() {
+          _blogs = data;
+          _isLoading = false;
+        });
+      }
+    } else {
+      throw Exception('Failed to load blogs');
+    }
   }
 
   Future<void> _fetchUserData() async {
@@ -51,8 +69,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     String? fetchedRole = await storage.read(key: "role");
     if (mounted) {
       setState(() {
-        FirstName = fetchedFirstName;
-        LastName = fetchedLastName;
+        firstName = fetchedFirstName;
+        lastName = fetchedLastName;
         email = fetchedEmail;
         role = fetchedRole;
       });
@@ -125,7 +143,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     Text('Hello', style: TextStyle(fontSize: MediaQuery.of(context).size.height * (16 / 800))),
                     Text(
-                      '$FirstName $LastName',
+                      '$firstName $lastName',
                       style: TextStyle(fontSize: MediaQuery.of(context).size.height * (20 / 800), fontWeight: FontWeight.bold),
                     ),
                     Text('Welcome back!', style: TextStyle(fontSize: MediaQuery.of(context).size.height * (16 / 800))),
@@ -138,17 +156,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             GestureDetector(
               onTap: () {
                 if (aiModelStatus == null) {
-                  showCupertinoDialogReuse(context, "AI Model", 'Failed to get statues');
+                  showCupertinoDialogReuse(context, "AI Model", 'Failed to get statuses');
                 } else if (aiModelStatus == 'online') {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen()));
                 } else if (aiModelStatus == 'offline') {
-                  showCupertinoDialogReuse(context, "AI Model", 'Sorry our AI Model is now offline try again later.');
+                  showCupertinoDialogReuse(context, "AI Model", 'Sorry, our AI Model is now offline. Please try again later.');
+                } else if (aiModelStatus == 'maintenance') {
+                  showCupertinoDialogReuse(context, "AI Model", 'Sorry, our AI Model is under maintenance. Please try again later.');
                 }
-                else if (aiModelStatus == 'maintenance') {
-                  showCupertinoDialogReuse(context, "AI Model", 'Sorry our AI Model is under maintenance try again later.');
-                }
-
-
               },
               child: Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
@@ -267,20 +282,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ],
                               ),
                             ),
-                            // Positioned(
-                            //   top: MediaQuery.of(context).size.height * (10 / 800),
-                            //   left: 0,
-                            //   right: 0,
-                            //   child: Stack(
-                            //     alignment: Alignment.center,
-                            //     children: [
-                            //       Image.asset('assets/images/Frame.png',
-                            //           width: MediaQuery.of(context).size.width * (300 / 360),
-                            //           height: MediaQuery.of(context).size.height * (30 / 800)),
-                            //       Text('50 Lessons', style: TextStyle(fontSize: MediaQuery.of(context).size.height * (10 / 800))),
-                            //     ],
-                            //   ),
-                            // ),
                             Positioned(
                               top: MediaQuery.of(context).size.height * (30 / 800),
                               left: MediaQuery.of(context).size.width * (16 / 360),
@@ -305,15 +306,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: GestureDetector(
                     onTap: () {
                       if (websiteStatus == null) {
-                        showCupertinoDialogReuse(context, "Website", 'Failed to get statues');
+                        showCupertinoDialogReuse(context, "Website", 'Failed to get statuses');
                       }
                       if (websiteStatus == 'online') {
                         _launchURL('http://10.0.2.2:8000');
                       } else if (websiteStatus == 'offline') {
-                        showCupertinoDialogReuse(context, "Website", 'Sorry our website is now offline try again later.');
-                      }
-                      else if (websiteStatus == 'maintenance') {
-                        showCupertinoDialogReuse(context, "Website", 'Sorry our website is under maintenance try again later.');
+                        showCupertinoDialogReuse(context, "Website", 'Sorry, our website is now offline. Please try again later.');
+                      } else if (websiteStatus == 'maintenance') {
+                        showCupertinoDialogReuse(context, "Website", 'Sorry, our website is under maintenance. Please try again later.');
                       }
                     },
                     child: Card(
@@ -391,32 +391,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
             // Horizontal Scroll View with Photos, Titles, Descriptions, and Heart Icon with Count
             Container(
               height: MediaQuery.of(context).size.height * (260 / 800),
-              child: ListView(
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  CustomCard(
-                    imagePath: 'assets/images/photo1.png',
-                    title: 'Happy',
-                    description:
-                    'To sign "happy," rotate 1 or 2 hands in front of your chest. To sign "happy," rotate 1 or 2 hands in front of your chest. To sign "happy," rotate 1 or 2 hands in front of your chest.',
-                    heartCount: 10,
-                  ),
-                  CustomCard(
-                    imagePath: 'assets/images/photo2.png',
-                    title: 'Sad',
-                    description:
-                    'To sign "sad," drag both hands down your face like tears.',
-                    heartCount: 20,
-                  ),
-                  CustomCard(
-                    imagePath: 'assets/images/photo3.png',
-                    title: 'Angry or mad',
-                    description:
-                    'To sign "angry" or "mad," scrunch your hand in front of your face.',
-                    heartCount: 30,
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * (100 / 800)),
-                ],
+                itemCount: _blogs.length,
+                itemBuilder: (context, index) {
+                  final blog = _blogs[index];
+                  return GestureDetector(
+                    onTap: () => _showBlogDetails(context, blog),
+                    child: CustomCard(
+                      key: ValueKey(blog['id']),
+                      imagePath: 'http://10.0.2.2:8000/storage/' + blog['image'],
+                      title: blog['title'],
+                      description: blog['content'],
+                      authorName: blog['author_name'],
+                    ),
+                  );
+                },
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * (85 / 800)),
@@ -425,27 +417,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+
+  void _showBlogDetails(BuildContext context, dynamic blog) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.all(MediaQuery.of(context).size.height * (16 / 800)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(blog['title'], style: TextStyle(fontSize: MediaQuery.of(context).size.height * (20 / 800), fontWeight: FontWeight.bold)),
+              SizedBox(height: MediaQuery.of(context).size.height * (8 / 800)),
+              Text(blog['content']),
+              // SizedBox(height: MediaQuery.of(context).size.height * (8 / 800)),
+              // Text('Author: ${blog['author_name']}', style: TextStyle(fontSize: MediaQuery.of(context).size.height * (12 / 800))),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
 
-class CustomCard extends StatefulWidget {
+class CustomCard extends StatelessWidget {
   final String imagePath;
   final String title;
   final String description;
-  final int heartCount;
+  final String authorName;
 
-  CustomCard({
+  const CustomCard({
+    Key? key,
     required this.imagePath,
     required this.title,
     required this.description,
-    required this.heartCount,
-  });
-
-  @override
-  _CustomCardState createState() => _CustomCardState();
-}
-
-class _CustomCardState extends State<CustomCard> {
-  bool isExpanded = false;
+    required this.authorName,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -460,40 +468,27 @@ class _CustomCardState extends State<CustomCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(widget.imagePath,
-                  width: double.infinity, height: MediaQuery.of(context).size.height * (100 / 800), fit: BoxFit.cover),
+              imagePath.isNotEmpty
+                  ? Image.network(imagePath,
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * (100 / 800),
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(Icons.broken_image, size: MediaQuery.of(context).size.width * (80 / 360));
+                },
+              )
+                  : Icon(Icons.broken_image, size: MediaQuery.of(context).size.width * (80 / 360)),
               SizedBox(height: MediaQuery.of(context).size.height * (8 / 800)),
-              Text(widget.title,
-                  style: TextStyle(fontSize: MediaQuery.of(context).size.height * (16 / 800), fontWeight: FontWeight.bold)),
+              Text(title,
+                  style: TextStyle(fontSize: MediaQuery.of(context).size.height * (14 / 800), fontWeight: FontWeight.bold)),
               SizedBox(height: MediaQuery.of(context).size.height * (4 / 800)),
-              isExpanded
-                  ? Text(widget.description, style: TextStyle(fontSize: MediaQuery.of(context).size.height * (14 / 800)))
-                  : Text(
-                widget.description,
-                style: TextStyle(fontSize: MediaQuery.of(context).size.height * (14 / 800)),
+              Text(description,
+                style: TextStyle(fontSize: MediaQuery.of(context).size.height * (10 / 800)),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
-              if (widget.description.length > 100)
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isExpanded = !isExpanded;
-                    });
-                  },
-                  child: Text(
-                    isExpanded ? 'Read less' : 'Read more...',
-                    style: TextStyle(fontSize: MediaQuery.of(context).size.height * (12 / 800)),
-                  ),
-                ),
               Spacer(),
-              Row(
-                children: [
-                  Icon(Icons.favorite, color: Colors.red, size: MediaQuery.of(context).size.height * (16 / 800)),
-                  SizedBox(width: MediaQuery.of(context).size.width * (4 / 360)),
-                  Text('${widget.heartCount}', style: TextStyle(fontSize: MediaQuery.of(context).size.height * (14 / 800))),
-                ],
-              ),
+              Text('Author: $authorName', style: TextStyle(fontSize: MediaQuery.of(context).size.height * (10 / 800))),
             ],
           ),
         ),

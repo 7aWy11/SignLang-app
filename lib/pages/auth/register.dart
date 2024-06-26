@@ -6,7 +6,7 @@ import '../../pages/auth/login.dart';
 import '../../pages/main/privacy_and_policy.dart';
 
 class SignupScreen extends StatefulWidget {
-  static String routName = 'SignUp';
+  static String routeName = 'SignUp';
 
   @override
   _SignupScreenState createState() => _SignupScreenState();
@@ -83,7 +83,7 @@ class _SignupScreenState extends State<SignupScreen>
     // Navigate to the Privacy Policy screen
     Navigator.pushNamed(
       context,
-      PrivacyPolicyScreen.routName,
+      PrivacyPolicyScreen.routeName,
     );
   }
 
@@ -91,7 +91,7 @@ class _SignupScreenState extends State<SignupScreen>
     // Navigate to the Login screen
     Navigator.pushNamed(
       context,
-      LoginScreen.routName,
+      LoginScreen.routeName,
     );
   }
 

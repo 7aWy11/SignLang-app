@@ -9,7 +9,7 @@ import '../../controllers/auth_controller.dart';
 import '../../helper/shared.dart';
 
 class ProfileScreen extends StatefulWidget {
-  static String routName = 'ProfileScreen';
+  static String routeName = 'ProfileScreen';
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();

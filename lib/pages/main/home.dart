@@ -6,7 +6,7 @@ import 'package:singlanguage/pages/profile/settings.dart';
 import 'package:singlanguage/pages/lessons/lesson.dart';
 
 class HomeScreen extends StatefulWidget {
-  static String routName = 'HomeScreen';
+  static String routeName = 'HomeScreen';
 
   @override
   _HomeScreenState createState() => _HomeScreenState();

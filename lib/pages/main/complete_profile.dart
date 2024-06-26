@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:singlanguage/controllers/auth_controller.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
-  static String routName = 'complete_profile';
+  static String routeName = 'complete_profile';
 
   @override
   _CompleteProfileScreenState createState() => _CompleteProfileScreenState();

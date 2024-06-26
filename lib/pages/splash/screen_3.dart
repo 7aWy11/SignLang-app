@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:singlanguage/pages/splash/screen_4.dart';
 
 class SplashScreenThree extends StatefulWidget {
-  static String routName = 'SplashViewThree';
+  static String routeName = 'SplashViewThree';
 
   @override
   _SplashScreenThreeState createState() => _SplashScreenThreeState();

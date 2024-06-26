@@ -14,7 +14,7 @@ import '../auth/login.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
-  static String routName = 'SplashView';
+  static String routeName = 'SplashView';
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -63,19 +63,19 @@ class _SplashScreenState extends State<SplashScreen> {
                   //print("can't go anything because all arg is null");
 
                   Navigator.pushReplacementNamed(
-                      context, CompleteProfileScreen.routName);
+                      context, CompleteProfileScreen.routeName);
                 else
-                  Navigator.pushReplacementNamed(context, HomeScreen.routName);
+                  Navigator.pushReplacementNamed(context, HomeScreen.routeName);
               }
             } catch (e) {
               await _authController.getStatuses();
               Navigator.pushReplacementNamed(
-                  context, CompleteProfileScreen.routName);
+                  context, CompleteProfileScreen.routeName);
               print(e);
             }
           } else {
             await _authController.getStatuses();
-            Navigator.pushReplacementNamed(context, LoginScreen.routName);
+            Navigator.pushReplacementNamed(context, LoginScreen.routeName);
           }
         },
       );

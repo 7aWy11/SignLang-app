@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
-  static String routName = 'privacy_and_policy';
+  static String routeName = 'privacy_and_policy';
 
   @override
   Widget build(BuildContext context) {

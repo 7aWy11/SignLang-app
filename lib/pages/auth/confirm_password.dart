@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ConfirmPasswordScreen extends StatefulWidget {
-  static String routName = 'confirm_password';
+  static String routeName = 'confirm_password';
 
   @override
   _ConfirmPasswordScreenState createState() => _ConfirmPasswordScreenState();

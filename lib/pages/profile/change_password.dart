@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../controllers/auth_controller.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
-  static String routName = 'change_password';
+  static String routeName = 'change_password';
 
   @override
   _ChangePasswordScreenState createState() => _ChangePasswordScreenState();

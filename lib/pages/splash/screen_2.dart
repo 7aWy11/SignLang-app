@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:singlanguage/pages/splash/screen_3.dart';
 
 class SplashScreenTwo extends StatefulWidget {
-  static String routName = 'SplashViewTwo';
+  static String routeName = 'SplashViewTwo';
 
   @override
   _SplashScreenTwoState createState() => _SplashScreenTwoState();

@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:singlanguage/controllers/auth_controller.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-  static String routName = 'update_profile';
+  static String routeName = 'update_profile';
 
   @override
   _UpdateProfileScreenState createState() => _UpdateProfileScreenState();

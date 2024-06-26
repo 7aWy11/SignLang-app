@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'lesson_view.dart';
 
 class LessonScreen extends StatefulWidget {
-  static String routName = 'LessonScreen';
+  static String routeName = 'LessonScreen';
 
   @override
   _LessonScreenState createState() => _LessonScreenState();

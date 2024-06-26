@@ -8,7 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../main/home.dart';
 
 class LoginScreen extends StatefulWidget {
-  static String routName = 'login';
+  static String routeName = 'login';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen>
       token = fetchedtoken;
     });
     if (token != null) {
-      Navigator.pushReplacementNamed(context, HomeScreen.routName);
+      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
     } else {
       print("don't have token!");
     }
@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen>
     // Navigate to the Forgot Password screen
     Navigator.pushNamed(
       context,
-      ForgetPasswordScreen.routName,
+      ForgetPasswordScreen.routeName,
     );
   }
 
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen>
     // Navigate to the Sign Up screen
     Navigator.pushNamed(
       context,
-      SignupScreen.routName,
+      SignupScreen.routeName,
     );
   }
 

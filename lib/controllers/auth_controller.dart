@@ -63,7 +63,7 @@ class AuthController extends GetConnect {
           await saveToken(newToken);
           request.headers['Authorization'] = 'Bearer $newToken';
           request.headers['Accept'] = 'application/json';
-          Navigator.pushReplacementNamed(_context, SplashScreen.routName);
+          Navigator.pushReplacementNamed(_context, SplashScreen.routeName);
 
           return await httpClient.request(
               request.method, request.url as String);
@@ -118,12 +118,12 @@ class AuthController extends GetConnect {
             user['phone'] != null) {
           await saveData(user['first_name'], user['last_name'], user['email'],
               user['role'], user['phone']);
-          Navigator.pushReplacementNamed(_context, HomeScreen.routName);
+          Navigator.pushReplacementNamed(_context, HomeScreen.routeName);
         } else {
           MessageBoxonConfirm(_context, "Error",
               "User data is incomplete, do you want to complete it?", () {
             Navigator.pushReplacementNamed(
-                _context, CompleteProfileScreen.routName);
+                _context, CompleteProfileScreen.routeName);
           });
         }
       } else {
@@ -146,7 +146,7 @@ class AuthController extends GetConnect {
         await saveToken(token);
         //Get.offAllNamed('/complete_profile');
         Navigator.pushReplacementNamed(
-            _context, CompleteProfileScreen.routName);
+            _context, CompleteProfileScreen.routeName);
         showSnackBar(_context, "Successfully Registration", Colors.green);
       } else {
         showCupertinoDialogReuse(_context, "Error", response.body['error']);
@@ -173,7 +173,7 @@ class AuthController extends GetConnect {
             user['role'], user['phone']);
         if (navigateToHome == true) {
           Get.snackbar("Success", "Profile updated Successfully");
-          Navigator.pushReplacementNamed(_context, HomeScreen.routName);
+          Navigator.pushReplacementNamed(_context, HomeScreen.routeName);
         } else {
           Get.snackbar("Success", "Profile updated Successfully");
           Navigator.pop(_context);
@@ -245,7 +245,7 @@ class AuthController extends GetConnect {
   Future<void> logout() async {
     await deleteToken();
     await deleteData();
-    Navigator.pushReplacementNamed(_context, LoginScreen.routName);
+    Navigator.pushReplacementNamed(_context, LoginScreen.routeName);
   }
 
   Future<bool> isAuthed() async {

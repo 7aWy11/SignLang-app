@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'confirm_password.dart';
 
 class ConfirmEmailScreen extends StatefulWidget {
-  static String routName = 'opt_password';
+  static String routeName = 'opt_password';
 
   @override
   _ConfirmEmailScreenState createState() => _ConfirmEmailScreenState();
@@ -45,7 +45,7 @@ class _ConfirmEmailScreenState extends State<ConfirmEmailScreen> {
   void _submitCode() async {
     Navigator.pushNamed(
       context,
-      ConfirmPasswordScreen.routName,
+      ConfirmPasswordScreen.routeName,
     );
   }
 
