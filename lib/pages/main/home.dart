@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icons.menu_book_outlined,
                   color: Colors.purple,
                 ),
-                itemLabel: 'Lesson',
+                itemLabel: 'Lessons',
               ),
               BottomBarItem(
                 inActiveItem: Icon(
