@@ -53,6 +53,9 @@ dependencies:
   animated_notch_bottom_bar: ^1.0.0
   font_awesome_flutter: ^10.1.0
   provider: ^6.0.0
+  video_player: ^2.2.11
+  youtube_player_flutter: ^8.0.0
+  flutter_inappwebview: ^5.3.2
 
 dependency_overrides:
   camera:

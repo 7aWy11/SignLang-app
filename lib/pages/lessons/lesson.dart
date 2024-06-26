@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'lesson_view.dart';
 
 class LessonScreen extends StatefulWidget {
@@ -9,13 +11,84 @@ class LessonScreen extends StatefulWidget {
 }
 
 class _LessonScreenState extends State<LessonScreen> {
+  List<Map<String, dynamic>> lessons = [];
+  bool isLoading = true; // Added loading state
+
+  @override
+  void initState() {
+    super.initState();
+    fetchLessonData();
+  }
+
+  Future<void> fetchLessonData() async {
+    final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/v1/auth/guides/count/category'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      setState(() {
+        lessons = data.map((item) {
+          return {
+            'lessonName': item['category'],
+            'lessonCount': '${item['count']} lessons',
+            'imagePath': getImagePath(item['category']),
+            'color': getColor(item['category']),
+            'title': getTitle(item['category']),
+          };
+        }).toList();
+        isLoading = false; // Set loading to false when data is fetched
+      });
+    } else {
+      throw Exception('Failed to load lesson data');
+    }
+  }
+
+  String getImagePath(String category) {
+    switch (category.toLowerCase()) {
+      case 'feeling':
+        return 'assets/images/heart.png';
+      case 'actions':
+        return 'assets/images/camera.png';
+      case 'weather':
+        return 'assets/images/amb.png';
+      default:
+        return 'assets/images/headphone.png';
+    }
+  }
+
+  Color getColor(String category) {
+    switch (category.toLowerCase()) {
+      case 'feeling':
+        return Color(0xFFFDE7EB);
+      case 'actions':
+        return Color(0xFFFDF8C9);
+      case 'weather':
+        return Color(0xFFE7ECF1);
+      default:
+        return Color(0xFFE5F4FD);
+    }
+  }
+
+  String getTitle(String category) {
+    switch (category.toLowerCase()) {
+      case 'feeling':
+        return 'Feelings';
+      case 'actions':
+        return 'Actions';
+      case 'weather':
+        return 'Weather';
+      default:
+        return 'TOP 30 SIGNS';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.all(MediaQuery.of(context).size.width * (16 / 360)),
-        child: Column(
+        child: isLoading // Check if data is still loading
+            ? Center(child: CircularProgressIndicator()) // Show progress indicator
+            : Column(
           children: [
             SizedBox(height: MediaQuery.of(context).size.height * (24 / 800)),
             Text(
@@ -34,40 +107,10 @@ class _LessonScreenState extends State<LessonScreen> {
                   crossAxisCount: 2,
                   crossAxisSpacing: MediaQuery.of(context).size.width * (16 / 360),
                   mainAxisSpacing: MediaQuery.of(context).size.height * (16 / 800),
-                  childAspectRatio: (160 / 2) / (280 / 2), // Adjust according to your aspect ratio
+                  childAspectRatio: (160 / 2) / (280 / 2),
                 ),
-                itemCount: 4,
+                itemCount: lessons.length,
                 itemBuilder: (context, index) {
-                  List<Map<String, dynamic>> lessons = [
-                    {
-                      'imagePath': 'assets/images/headphone.png',
-                      'lessonCount': '30 lessons',
-                      'title': 'TOP 30 SIGNS',
-                      'color': Color(0xFFE5F4FD),
-                      'lessonName': 'Top 30 Signs'
-                    },
-                    {
-                      'imagePath': 'assets/images/heart.png',
-                      'lessonCount': '7 lessons',
-                      'title': 'Feelings',
-                      'color': Color(0xFFFDE7EB),
-                      'lessonName': 'Feelings'
-                    },
-                    {
-                      'imagePath': 'assets/images/camera.png',
-                      'lessonCount': '4 lessons',
-                      'title': 'Actions',
-                      'color': Color(0xFFFDF8C9),
-                      'lessonName': 'Actions'
-                    },
-                    {
-                      'imagePath': 'assets/images/amb.png',
-                      'lessonCount': '8 lessons',
-                      'title': 'Weather',
-                      'color': Color(0xFFE7ECF1),
-                      'lessonName': 'Weather'
-                    },
-                  ];
                   return _buildLessonCard(
                     context,
                     lessons[index]['imagePath'],
@@ -91,11 +134,16 @@ class _LessonScreenState extends State<LessonScreen> {
       String lessonCount,
       String title,
       Color color,
-      String lessonName) {
+      String lessonName,
+      ) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LessonView(lessonName: lessonName)));
+          context,
+          MaterialPageRoute(
+            builder: (context) => LessonView(lessonName: lessonName),
+          ),
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -111,7 +159,6 @@ class _LessonScreenState extends State<LessonScreen> {
           ],
         ),
         child: Column(
-
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(

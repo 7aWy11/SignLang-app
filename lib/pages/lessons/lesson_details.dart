@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class LessonDetails extends StatelessWidget {
+class LessonDetails extends StatefulWidget {
   static const routName = 'LessonDetails';
 
   final String lessonName;
@@ -18,6 +19,13 @@ class LessonDetails extends StatelessWidget {
   });
 
   @override
+  _LessonDetailsState createState() => _LessonDetailsState();
+}
+
+class _LessonDetailsState extends State<LessonDetails> {
+  bool _isVideoPlaying = false;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -27,9 +35,8 @@ class LessonDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
-                //leading: Icon(Icons.arrow_back_ios),
                 title: Text(
-                  '$lessonName - $title',
+                  '${widget.lessonName} - ${widget.title}',
                   style: TextStyle(fontSize: MediaQuery.of(context).size.width * (18 / 360)),
                 ),
                 trailing: Icon(Icons.arrow_forward_ios, size: MediaQuery.of(context).size.width * (24 / 360)),
@@ -38,10 +45,30 @@ class LessonDetails extends StatelessWidget {
                 },
               ),
               SizedBox(height: MediaQuery.of(context).size.height * (16 / 800)),
-              Image.asset(imagePath, height: MediaQuery.of(context).size.height * (200 / 800), fit: BoxFit.cover),
+              _isVideoPlaying
+                  ? YoutubePlayerWidget(videoUrl: widget.videoUrl)
+                  : Stack(
+                alignment: Alignment.center,
+                children: [
+                  Image.network(
+                    widget.imagePath,
+                    height: MediaQuery.of(context).size.height * (200 / 800),
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.play_circle_fill, size: 64.0, color: Colors.black),
+                    onPressed: () {
+                      setState(() {
+                        _isVideoPlaying = true;
+                      });
+                    },
+                  ),
+                ],
+              ),
               SizedBox(height: MediaQuery.of(context).size.height * (16 / 800)),
               Text(
-                title,
+                widget.title,
                 style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width * (30 / 360),
                   fontWeight: FontWeight.bold,
@@ -49,38 +76,10 @@ class LessonDetails extends StatelessWidget {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * (16 / 800)),
               Text(
-                description,
+                widget.description,
                 style: TextStyle(fontSize: MediaQuery.of(context).size.width * (13 / 360)),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * (20 / 800)),
-              ElevatedButton(
-                onPressed: () {
-                  // Handle video playback
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => VideoPlayerScreen(videoUrl: videoUrl),
-                    ),
-                  );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Watch video',
-                      style: TextStyle(fontSize: MediaQuery.of(context).size.width * (16 / 360)),
-                    ),
-                    SizedBox(width: MediaQuery.of(context).size.width * (8 / 360)),
-                    Icon(Icons.play_arrow, size: MediaQuery.of(context).size.width * (24 / 360)),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * (32 / 360),
-                    vertical: MediaQuery.of(context).size.height * (12 / 800),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -89,19 +88,46 @@ class LessonDetails extends StatelessWidget {
   }
 }
 
-class VideoPlayerScreen extends StatelessWidget {
+class YoutubePlayerWidget extends StatefulWidget {
   final String videoUrl;
 
-  VideoPlayerScreen({required this.videoUrl});
+  YoutubePlayerWidget({required this.videoUrl});
+
+  @override
+  _YoutubePlayerWidgetState createState() => _YoutubePlayerWidgetState();
+}
+
+class _YoutubePlayerWidgetState extends State<YoutubePlayerWidget> {
+  late YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    final videoId = YoutubePlayer.convertUrlToId(widget.videoUrl);
+    _controller = YoutubePlayerController(
+      initialVideoId: videoId!,
+      flags: YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Implement your video player here
-    return Scaffold(
-      appBar: AppBar(title: Text('Video Player')),
-      body: Center(
-        child: Text('Video player for $videoUrl'),
-      ),
+    return YoutubePlayer(
+      controller: _controller,
+      showVideoProgressIndicator: true,
+      progressIndicatorColor: Colors.amber,
+      onReady: () {
+        print('Player is ready.');
+      },
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'lesson_details.dart';
 
 class LessonView extends StatefulWidget {
@@ -13,12 +15,29 @@ class LessonView extends StatefulWidget {
 }
 
 class _LessonViewScreenState extends State<LessonView> {
-  final List<Map<String, String>> lessons = List.generate(30, (index) => {
-    'title': 'Lesson ${index + 1}',
-    'description': 'Description of Lesson ${index + 1}. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson. This is a detailed description explaining the lesson.',
-    'image': 'assets/images/photo2.png',
-    'videoUrl': 'https://www.youtube.com/watch?v=5jVnLbdqR6U',
-  });
+  late Future<List<Map<String, dynamic>>> lessonsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    lessonsFuture = fetchLessons();
+  }
+
+  Future<List<Map<String, dynamic>>> fetchLessons() async {
+    final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/v1/auth/guides/category/${widget.lessonName}'));
+
+    if (response.statusCode == 200) {
+      List data = json.decode(response.body);
+      return data.map((item) => {
+        'title': item['name'],
+        'description': item['description'],
+        'image': 'http://10.0.2.2:8000/storage/' + item['image'],
+        'videoUrl': item['video_url'],
+      }).toList();
+    } else {
+      throw Exception('Failed to load lessons');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +56,35 @@ class _LessonViewScreenState extends State<LessonView> {
               },
             ),
             Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.all(MediaQuery.of(context).size.width * (16 / 360)),
-                itemCount: lessons.length,
-                itemBuilder: (context, index) {
-                  return _buildLessonCard(
-                    widget.lessonName,
-                    lessons[index]['image']!,
-                    lessons[index]['title']!,
-                    lessons[index]['description']!,
-                    lessons[index]['videoUrl']!,
+              child: FutureBuilder<List<Map<String, dynamic>>>(
+                future: lessonsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Failed to load lessons'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No lessons available'));
+                  }
+
+                  return ListView.builder(
+                    padding: EdgeInsets.all(MediaQuery.of(context).size.width * (16 / 360)),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      final lesson = snapshot.data![index];
+                      final imagePath = lesson['image'];
+                      final title = lesson['title'];
+                      final description = lesson['description'];
+                      final videoUrl = lesson['videoUrl'];
+
+                      return _buildLessonCard(
+                        widget.lessonName,
+                        imagePath,
+                        title,
+                        description,
+                        videoUrl,
+                      );
+                    },
                   );
                 },
               ),
@@ -90,7 +128,21 @@ class _LessonViewScreenState extends State<LessonView> {
         ),
         child: Row(
           children: [
-            Image.asset(imagePath, height: MediaQuery.of(context).size.height * (80 / 800), width: MediaQuery.of(context).size.width * (80 / 360), fit: BoxFit.cover),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * (80 / 800),
+              width: MediaQuery.of(context).size.width * (80 / 360),
+              child: Image.network(
+                imagePath,
+                fit: BoxFit.cover,
+                headers: {
+                  'Cache-Control': 'no-cache',
+                  'Pragma': 'no-cache',
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(Icons.broken_image, size: MediaQuery.of(context).size.width * (80 / 360));
+                },
+              ),
+            ),
             SizedBox(width: MediaQuery.of(context).size.width * (16 / 360)),
             Expanded(
               child: Column(

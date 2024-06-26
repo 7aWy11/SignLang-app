@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:singlanguage/pages/lessons/lesson.dart';
 import 'package:singlanguage/pages/main/camera.dart';
+import 'package:singlanguage/pages/main/dashboard.dart';
 import 'package:singlanguage/pages/main/home.dart';
 import 'package:singlanguage/pages/profile/change_password.dart';
 import 'package:singlanguage/pages/profile/settings.dart';
@@ -57,6 +58,7 @@ class _MyWidgetState extends State<SignLang> {
         ChangePasswordScreen.routName: (context) => ChangePasswordScreen(),
         LessonScreen.routName: (context) => LessonScreen(),
         CameraScreen.routName: (context) => CameraScreen(),
+        DashboardScreen.routName: (context) => DashboardScreen(),
 
     },
     );
