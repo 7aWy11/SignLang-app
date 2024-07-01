@@ -40,12 +40,12 @@ class _CameraScreenState extends State<CameraScreen> {
       model: "assets/detect.tflite",
       labels: "assets/labels.txt",
     );
-    print("model loaded");
+    print("Model loaded");
   }
 
   initCamera() async {
     cameras = await availableCameras();
-    print("cameras: $cameras\n");
+    print("Cameras: $cameras\n");
     if (cameras.isNotEmpty) {
       cameraController = CameraController(
         cameras[isFrontCamera ? 1 : 0],
@@ -60,7 +60,7 @@ class _CameraScreenState extends State<CameraScreen> {
       setState(() {
         cameraController!.startImageStream((image) {
           _frameCount++;
-          if (_frameCount % 10 == 0) {  // Process every 10th frame
+          if (_frameCount % 1 == 0) {  // Process every 10th frame
             cameraImage = image;
             applyModelOnImage();
           }
@@ -105,7 +105,7 @@ class _CameraScreenState extends State<CameraScreen> {
           imageMean: 127.5,
           imageStd: 127.5,
           rotation: 90,
-          numResults: 3,
+          numResults: 7,
           threshold: 0.1,
           asynch: true,
         );
@@ -114,6 +114,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
         setState(() {
           if (predictions != null && predictions.isNotEmpty) {
+            // Display all predictions
             answer = predictions[0]['label'].toString().substring(1);
           } else {
             answer = '';

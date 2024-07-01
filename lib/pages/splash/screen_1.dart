@@ -51,32 +51,32 @@ class _SplashScreenState extends State<SplashScreen> {
         const Duration(seconds: 4),
         () async {
           if (!mounted) return;
-           ///Navigator.pushReplacementNamed(context, HomeScreen.routName); // testing phone + emulator in same time
-          if (await _authController.isAuthed()) {
-            try {
-              await _authController.getStatuses();
-              dynamic data = await _authController.getUserData();
-              if (data != null) {
-                if (data['first_name'] == null ||
-                    data['last_name'] == null ||
-                    data['phone'] == null)
-                  //print("can't go anything because all arg is null");
-
-                  Navigator.pushReplacementNamed(
-                      context, CompleteProfileScreen.routeName);
-                else
-                  Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-              }
-            } catch (e) {
-              await _authController.getStatuses();
-              Navigator.pushReplacementNamed(
-                  context, CompleteProfileScreen.routeName);
-              print(e);
-            }
-          } else {
-            await _authController.getStatuses();
-            Navigator.pushReplacementNamed(context, LoginScreen.routeName);
-          }
+           Navigator.pushReplacementNamed(context, HomeScreen.routeName); // testing phone + emulator in same time
+          // if (await _authController.isAuthed()) {
+          //   try {
+          //     await _authController.getStatuses();
+          //     dynamic data = await _authController.getUserData();
+          //     if (data != null) {
+          //       if (data['first_name'] == null ||
+          //           data['last_name'] == null ||
+          //           data['phone'] == null)
+          //         //print("can't go anything because all arg is null");
+          //
+          //         Navigator.pushReplacementNamed(
+          //             context, CompleteProfileScreen.routeName);
+          //       else
+          //         Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+          //     }
+          //   } catch (e) {
+          //     await _authController.getStatuses();
+          //     Navigator.pushReplacementNamed(
+          //         context, CompleteProfileScreen.routeName);
+          //     print(e);
+          //   }
+          // } else {
+          //   await _authController.getStatuses();
+          //   Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+          // }
         },
       );
     }

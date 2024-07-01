@@ -122,6 +122,8 @@ flutter:
     - assets/images/heart.png
     - assets/images/camera.png
     - assets/images/change_password_illustration.png
+    - assets/images/update-illustrator.png
+    - assets/images/update.jpg
     - assets/detect.tflite
     - assets/labels.txt
 

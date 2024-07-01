@@ -77,7 +77,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     SizedBox(height: MediaQuery.of(context).size.height * (5 / 800)),
                     // Illustration
                     Image.asset(
-                      'assets/images/complete_profile_illustration.png',
+                      'assets/images/update.jpg',
                       height: MediaQuery.of(context).size.height * (280 / 800),
                       width: MediaQuery.of(context).size.width * (400 / 360),
                       fit: BoxFit.contain,

@@ -155,15 +155,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
             // Camera for Sign Language Card
             GestureDetector(
               onTap: () {
-                if (aiModelStatus == null) {
-                  showCupertinoDialogReuse(context, "AI Model", 'Failed to get statuses');
-                } else if (aiModelStatus == 'online') {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen()));
-                } else if (aiModelStatus == 'offline') {
-                  showCupertinoDialogReuse(context, "AI Model", 'Sorry, our AI Model is now offline. Please try again later.');
-                } else if (aiModelStatus == 'maintenance') {
-                  showCupertinoDialogReuse(context, "AI Model", 'Sorry, our AI Model is under maintenance. Please try again later.');
-                }
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen())); /// for testing phone
+
+                // if (aiModelStatus == null) {
+                //   showCupertinoDialogReuse(context, "AI Model", 'Failed to get statuses');
+                // } else if (aiModelStatus == 'online') {
+                //   Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen()));
+                // } else if (aiModelStatus == 'offline') {
+                //   showCupertinoDialogReuse(context, "AI Model", 'Sorry, our AI Model is now offline. Please try again later.');
+                // } else if (aiModelStatus == 'maintenance') {
+                //   showCupertinoDialogReuse(context, "AI Model", 'Sorry, our AI Model is under maintenance. Please try again later.');
+                // }
               },
               child: Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
