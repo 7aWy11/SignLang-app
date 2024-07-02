@@ -56,6 +56,7 @@ dependencies:
   video_player: ^2.2.11
   youtube_player_flutter: ^8.0.0
   flutter_inappwebview: ^5.3.2
+  flutter_tts: ^3.4.0
 
 dependency_overrides:
   camera:

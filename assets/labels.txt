@@ -1,6 +1,8 @@
-0 Unkowne
+0 Unknown
 1 afternoon
-2 coffe
-3 family
+2 family
+3 hello
 4 i love you
-5 hello
+5 thanks
+6 work
+7 bandage
